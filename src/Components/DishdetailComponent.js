@@ -21,7 +21,7 @@ class CommentForm extends React.Component {
   }
   handleSubmit(values) {
     this.toggleModal();
-    alert(JSON.stringify(values));
+    this.props.addComment(this.props.dishId, values.rating, values.author, values.comment);
   }
   render() {
     return (
@@ -117,7 +117,7 @@ function RenderDish({ dish }) {
   }
 }
 
-function RenderComments({comments}) {
+function RenderComments({comments, addComment, dishId}) {
   if ( comments != null ) {
 
     const dishComments = comments.map(
@@ -139,7 +139,7 @@ function RenderComments({comments}) {
           </CardTitle>
           <CardText>
             {dishComments}
-            <CommentForm />
+            <CommentForm dishId={dishId} addComment={addComment} />
           </CardText>
         </CardBody>
       </Card>
@@ -174,7 +174,10 @@ export const DishDetail = (props) => {
           <RenderDish dish={props.dish} />
         </div>
         <div className="col-12 col-md-5 m-1">
-          <RenderComments comments={props.comments} />
+          <RenderComments 
+            comments={props.comments}
+            addComment={props.addComment}
+            dishId={props.dish.id} />
         </div>
       </div>
     </div>
